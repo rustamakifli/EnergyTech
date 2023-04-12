@@ -1,0 +1,192 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #f2f2f2;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 20px;
+	flex: 1;
+}
+
+.header h2 {
+	font-size: 32px;
+	margin-bottom: 10px;
+}
+
+.header p {
+	font-size: 18px;
+	color: #666;
+}
+
+.form-group {
+	margin-bottom: 20px;
+	flex: 1;
+}
+
+.form-group label {
+	display: block;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group select {
+	width: 100%;
+	padding: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #f2f2f2;
+	font-size: 18px;
+	color: #666;
+}
+
+.form-group select option {
+	color: #666;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.col {
+	flex: 1;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.col:first-child {
+	padding-left: 0;
+}
+
+.col:last-child {
+	padding-right: 0;
+}
+
+.footer {
+	margin-top: 20px;
+	text-align: center;
+	color: #666;
+	flex: 1;
+}
+
+.footer p {
+	font-size: 16px;
+}
+
+/* Media queries */
+
+@media (max-width: 1024px) {
+	.container {
+		max-width: 800px;
+	}
+
+	.header h2 {
+		font-size: 24px;
+	}
+
+	.header p {
+		font-size: 16px;
+	}
+
+	.form-group label {
+		font-size: 16px;
+	}
+
+	.form-group input[type="text"],
+	.form-group select {
+		font-size: 16px;
+	}
+
+	.footer p {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		max-width: 500px;
+		flex-direction: column;
+	}
+
+	.header h2 {
+		font-size: 20px;
+	}
+
+	.header p {
+		font-size: 14px;
+	}
+
+	.form-group label {
+		font-size: 14px;
+		font-weight: normal;
+		margin-bottom: 3px;
+	}
+
+	.form-group input[type="text"],
+	.form-group select {
+		font-size: 14px;
+	}
+
+	.footer p {
+		font-size: 12px;
+	}
+
+	.col {
+		padding-right: 0;
+		padding-left: 0;
+		margin-bottom: 20px;
+	}
+
+	.col:first-child {
+		padding-top: 20px;
+	}
+
+	.col:last-child {
+		padding-bottom: 20px;
+	}
+}
+
+/* Columns */
+
+.col.voen {
+	flex-basis: 30%;
+}
+
+.col.melumatlar {
+	flex-basis: 70%;
+}
+
+.col.obyekt {
+	flex-basis: 70%;
+}
+
+.col.obyekt-mini {
+	flex-basis: 30%;
+}
+
+/* Labels */
+
+.form-group label.header-label {
+	font-size: 24px
