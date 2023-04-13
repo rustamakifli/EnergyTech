@@ -6,18 +6,14 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.contrib.admin import SimpleListFilter
 
-from user.models import (
-    MyUser, 
-)
+from core.models import *
+
+admin.site.register(Appealicant)
+admin.site.register(AppealicantDay)
+admin.site.register(Applicant)
+admin.site.register(Region)
+admin.site.register(CompanyCategory)
 
 
-@admin.register(MyUser)
-class MyUserAdmin(admin.ModelAdmin):
-    readonly_fields = (
-        "last_activity",
-        'password',
-    )
-    search_fields = ("email", "first_name", "last_name")
-
-
+# Register your models here.
 
