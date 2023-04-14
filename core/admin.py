@@ -14,6 +14,10 @@ admin.site.register(Applicant)
 admin.site.register(Region)
 admin.site.register(CompanyCategory)
 
+admin.site.register(PromoCode)
 
+
+
+# scoreboard_site.register(models.Post)
 # Register your models here.
 

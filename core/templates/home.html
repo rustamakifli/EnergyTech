@@ -1,0 +1,89 @@
+{% extends 'index.html' %} 
+{% load widget_tweaks %}
+
+{% load static %}
+{% block css %} 
+<link rel="stylesheet" href="{% static '/css/ruslan.css'  %}">
+
+{% endblock %}
+{% block header %} 
+<!-- <h1>Ana Səhifə</h1> -->
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3" style="background-color: #002F6C;height: 100vh;min-height: 100%; max-height: 100%;">
+            <nav>
+                  <div class="dropdown">
+                    {% if request.user.is_authenticated %}
+                    <h3 style="color:white;text-align: center;">Xoş Gördük,
+                      {{request.user.get_full_name}}</h3><br><hr>
+                    {% else %}
+                    <div class="d-flex justify-content-center align-items-center">
+                      <a href="{% url 'login' %}"><button style="margin-bottom: 15px !important;" class="btnLogin" type="submit"  name='submit' value='sign_in'>&nbsp;&nbsp; Daxil ol&nbsp;&nbsp; </button></a><br><hr>
+                    </div>
+                    {% endif %}
+                    <a href="#" style="text-decoration: none; color: white;">Xidmətlər</a>
+                    <ul class="list d-flex flex-column " style="align-items: flex-start;">
+                      <li><a href="#">Azərişıq</a></li>
+                      <br>
+                      {% if request.user.is_authenticated %}
+                      <li><a href="{% url 'applicant_list' %}">Tamamlanmamış Müraciətlər</a></li>
+                      <br> 
+                      <li><a href="{% url 'applicant_list_fulled' %}">Göndərilmiş Müraciətlər</a></li>
+                      {% endif %}
+                    </ul>
+                </div>
+              </nav>
+              
+        </div>
+        <div class="col-9 d-flex flex-column">
+          {% if request.user.is_authenticated %}
+          <div style="margin-top: 20px;">
+            <h1 style="text-align: center;">Azərişıq ilkin məlumatlar</h1>
+            <hr>
+        </div>
+          <div class="">
+              <div class="d-flex " style="justify-content: space-between;">
+                <a href="{% url 'add_applicant' %}"><button style="margin-bottom: 15px !important;" class="btnLogin" type="submit"  name='submit' value='sign_in'>&nbsp;&nbsp; Müraciət et&nbsp;&nbsp; </button></a>
+                <p>Promo kod: {{promo_code}}</p>
+              </div>
+              <div>
+                <canvas id="myChart"></canvas>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endblock %}
+      {% block script %}
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+      
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', ],
+          datasets: [{
+            label: 'Mənim İşıq sərfiyyatım',
+            data: [12, 19, 3, 5, 2, ],
+            backgroundColor: 'rgba(255, 99, 132, 1.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+      </script>
+      {% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'index.html' %} 
+{% load static %}
+{% load widget_tweaks %}
+{% block css %} 
+<link rel="stylesheet" type="text/css" href="{% static '/css/gridfooter.css' %}">
+<link rel="stylesheet" href="{% static '/css/grid.css'  %}">
+<link rel="stylesheet" href="{% static '/css/mainCarousel.css'  %}">
+<link rel="stylesheet" href="{% static '/css/carouselPic.css'  %}">
+<link rel="stylesheet" href="{% static '/css/login.css'  %}">
+<link rel="stylesheet" href="{% static '/css/register.css'  %}">
+<link rel="stylesheet" href="{% static '/css/gridLastest.css'  %}">
+<link rel="stylesheet" href="{% static '/css/latest.css'  %}">
+<link rel="stylesheet" href="{% static '/css/us.css'  %}">
+<link rel="stylesheet" href="{% static '/css/carPage.css'  %}">
+<link rel="stylesheet" href="{% static '/css/gridCustomer.css'  %}">
+<link rel="stylesheet" href="{% static '/css/customer.css'  %}">
+<link rel="stylesheet" href="{% static '/css/renting.css'  %}">
+<link rel="stylesheet" href="{% static '/css/confir.css'  %}">
+<link rel="stylesheet" href="{% static '/css/stripe.css'  %}">
+<link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+<link rel="stylesheet" href="{% static '/css/footer.css' %}">
+<link rel="stylesheet" href="{% static '/css/carTable.css' %}">
+<link rel="stylesheet" href="{% static '/css/gallery.css' %}">
+<link rel="stylesheet" href="{% static '/css/galleryGrdid.css' %}">
+<link rel="stylesheet" href="{% static '/css/updateCustomer.css' %}">
+<link rel="stylesheet" href="{% static '/css/graph.css' %}">
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400;700&family=Montserrat:wght@300;400;500;700&family=Prompt:wght@400;500&family=Roboto:wght@100;300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% endblock %}
+{% block header %} 
+<header>
+    <div class="container">
+        <!-- <h1>Azərişıq/Müraciət</h1> -->
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+<!--When website will be deployed logic will be made that if user is logged he don't se login container-->
+{% if user.is_authenticated %}
+
+{% else  %}
+    <div id="login" class="boxSizeLogin">
+      <div class="bodyStyleLogin">
+        <div class="wrapperLogin" id="containerLogin">
+          <div class="form-containerLogin sign-up-containerLogin">
+            <div class="loginForm">
+            <div class="loginFormText">
+              <div style=" padding-top: 185px !important;" class="accoutLogin createPos ">Yeni hesab yaradın</div>
+              <div class="textCreatePos">Yeni hesab yaradın!<br/></div>
+              <a  href="{% url 'register' %}">
+                <button  class="btnLogin buttonPosLogin" > &nbsp;&nbsp;Qeydiyyat&nbsp; keçin&nbsp;&nbsp; </button>
+              </a>
+
+            </div>
+            </div>
+          </div>
+          
+          <div class="form-containerLogin sign-in-containerLogin">
+            <form class="loginForm" action="{% url 'login' %}" method="POST">
+              {% csrf_token %}
+              <div style="opacity:0.7;" class="titleTagLogin ">Xoş gəlmisiniz</div>
+              <br>
+              <p style="font-size: 20px;" class="pLogin">Hesabınıza daxil olun!</p>
+
+              {% for field in form %}
+              {% if field.name == "username" %}
+              {% render_field field class="inpLogin" placeholder=field.label %}
+              {% if field.errors %}
+              <span style="font-size: 12px; color: red; font-weight: 400;">*
+                  {% for error in field.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+              {% endif %}
+              {% if field.name == "password" %}
+              {% render_field field class="inpLogin" placeholder=field.label %}
+              {% if field.errors %}
+              <span style="font-size: 12px; color: red; font-weight: 400;">*
+                  {% for error in field.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+              {% endif %}
+              
+              {% endfor %}
+              {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+              <div class="alert small"  style="color: red;">
+                  {{ error }}
+              </div>
+              {% endfor %}
+              {% endif %}
+              <div class="buttonPosLogin">
+              <button style="margin-bottom: 15px !important;" class="btnLogin" type="submit"  name='submit' value='sign_in'>&nbsp;&nbsp; Daxil ol&nbsp;&nbsp; </button>
+                <br>
+              <a style="font-size: 15px; color: rgb(73, 73, 73);" class="signup__link" href="">Parolu unutmusunuz?</a>
+
+              </div>
+            </form>
+          </div>
+          <div class="overlay-containerLogin">
+            <div class="overlayLogin">
+              <div class="overlay-panelLogin overlay-leftLogin">
+                <div class="accoutLogin alreadyLogin">Hesabınız var?</div>
+                <p>Hesabınıza daxil olur!</p>
+                <div class="buttonPosLogin">
+                  <button onclick="remove()" class="ghost btnLogin" id="signIn">&nbsp;&nbsp; Daxil ol &nbsp;&nbsp;</button>
+                </div>
+              </div>
+              <div class="overlay-panelLogin overlay-rightLogin">
+                <div class="titleTagLogin">Salam!</div>
+                <p style="font-size: 20px;" class="pLogin">Yeni hesab yaradın!</p>
+                <div class="buttonPosLogin">
+
+             
+                  <button onclick="myFunction()" class="ghost btnLogin" id="signUp">Qeydiyyatdan keçin</button>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif  %}
+
+<script>
+        function myFunction() {
+          var element = document.getElementById("containerLogin");
+          element.classList.add("right-panel-activeLogin");
+        }
+        function remove() {
+          var element = document.getElementById("containerLogin");
+          element.classList.remove("right-panel-activeLogin");
+        }
+        if (window.location.href.indexOf("login") > -1) {
+          document.querySelector('.wrapper').style.display = "none";
+        }
+</script>
+
+{% endblock %}

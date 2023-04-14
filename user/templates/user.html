@@ -1,0 +1,45 @@
+
+{% load static %}
+                            <div class="col-12">
+                                <div class="form-header">
+                                    <h2>Əsas məlumatlar</h2>
+                                </div>
+                                <div class="form-control">
+                                    <label for="voen">Fin kod</label>
+                                    <input type="text" class="forms1" id="voen" name="voen" value="{{request.user.fin_code}}">
+                                    <div class="row">
+                                    <div class="col-3 d-flex justify-content-center" style="margin-top: 50px; ">
+                                        <img src="{% if request.user.profile_picture %}{{request.user.profile_picture.url}}{% else %}{% static 'profile_images/Cool-Profile-Picture.webp' %}{% endif %}" alt="" id="profile-pic">
+                                    </div>
+                                    <div class="col">
+                                        <label for="adi">Adınız</label>
+                                        <input type="text" class="forms1" name="adi" value="{{request.user.first_name}}">
+                                    
+                                    
+                                        <label for="faaliyyet-novu">Soyadınız</label>
+                                        <input type="text" class="forms1" name="faaliyyet-novu" value="{{request.user.last_name}}">
+
+                                        <label for="faaliyyet-novu">Ata adı</label>
+                                        <input type="text" class="forms1" name="faaliyyet-novu" value="{{request.user.father_name}}">
+
+                                        <label for="faaliyyet-novu">Vəsiqə No</label>
+                                        <input type="text" class="forms1" name="faaliyyet-novu" value="{{request.user.gov_id}}">
+                                    </div>
+                                </div>
+                                    <label for="faaliyyet-novu">Qeydiyyat ünvanı</label>
+                                    <input type="text" class="forms1" name="faaliyyet-novu" value="{{request.user.address}}">
+                                </div>
+                                <div class="form-header">
+                                    <h2>Əlaqə məlumatları</h2>
+                                </div>
+                                <div class="form-control">
+                                    <label for="voen">Ev telefonu</label>
+                                    <input type="text" class="forms1" name="voen" value="{{request.user.home_phone}}">
+                                
+                                
+                                    <label for="adi">Şəxsi telefon</label>
+                                    <input type="text"  class="forms1" name="adi" value="{{request.user.phone}}">
+                                
+                                </div>
+                            </div>
+                        

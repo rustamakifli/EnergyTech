@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser,UserManager
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
+import shortuuid
 
 from django.utils import timezone
 # from core.models import *
@@ -53,7 +54,7 @@ class MyUser(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=100, blank=True)
     profile_picture = models.ImageField(
-        upload_to='profile_images', null=True, blank=True, default='profile/default_pic.png'
+        upload_to='profile_images', null=True, blank=True, default='profile_images/Cool-Profile-Picture.webp'
     )
 
     gov_id = models.CharField(
@@ -70,7 +71,7 @@ class MyUser(AbstractUser):
         max_length=30,
         help_text=_("Şəxsiyyət fin kodu"),
     )
-
+    # promo_code = models.CharField(max_length=10, unique=True, blank=True)
     is_active = models.BooleanField(
         _("active"),
         default=True,
@@ -114,3 +115,4 @@ class MyUser(AbstractUser):
             Returns the short name for the user.
         """
         return self.first_name
+

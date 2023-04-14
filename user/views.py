@@ -24,10 +24,35 @@ from django.views import generic
 # from user.utils import account_activation_token
 
 # from user.tasks import send_email_confirmation
-from user.forms import BaseRegistrationForm
+from user.forms import *
 # Create your views here.
-USER = get_user_model()
+from core.models import PromoCode
+import random
+import string
 
+USER = get_user_model()
+def generate_promo_code():
+    # Generate a 6 character random string for the promo code
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+    form_class = MyUserLoginForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
+@login_required
+def logout(request):
+    django_logout(request)
+    return redirect('home')
 class AccountRegistrationView(generic.CreateView):
     """
         Account Register View if user is login
@@ -35,11 +60,17 @@ class AccountRegistrationView(generic.CreateView):
     """
 
     template_name = "register.html"
-    # form_class = BaseRegistrationForm
+    form_class = BaseRegistrationForm
     model = USER
     success_url = reverse_lazy("login")
     user = None
 
     def form_valid(self, form):
         user = form.save()
+        promo_code = PromoCode.objects.create(user=user, code=generate_promo_code())
+        user.save()
+        if 'profile_picture' in self.request.FILES:
+            user.profile_picture = self.request.FILES['profile_picture']
+            print(user.profile_picture)
+            user.save()
         return super().form_valid(form)

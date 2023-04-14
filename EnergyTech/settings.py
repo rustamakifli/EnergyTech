@@ -35,11 +35,15 @@ AUTH_USER_MODEL = 'user.MyUser'
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
+    'widget_tweaks',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
+    'custom_admin',
+    'ajax_select',
     'user',
     'core'
 ]
@@ -120,13 +124,23 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+LOGIN_URL = 'user:login'
+LOGIN_REDIRECT_URL = 'home'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+MEDIA_URL = 'media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RECAPTCHA_PUBLIC_KEY = "6Lciq4UlAAAAAK1MS8la5IOegDskYjowdIHzOlqa"
+RECAPTCHA_PRIVATE_KEY = "6Lciq4UlAAAAAF3FVUt27C55CKQj-yB8MWEE7QFa"

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-
+from EnergyTech import settings
 # Create your models here.
 User = get_user_model()
 # Create your models here.
@@ -11,8 +11,8 @@ class CompanyCategory(models.Model):
         db_index=True,
         blank=True,
         null=True,
-        max_length=30,
-        help_text=_("Şəxsi VÖEN"),
+        max_length=200,
+        help_text=_("Kategoriya"),
     )
     class Meta:
         verbose_name = "Category"
@@ -146,3 +146,25 @@ class Applicant(models.Model):
         max_length=130,
         help_text=_("Add more"),
     )
+    promo_code = models.CharField(
+        db_index=True,
+        blank=True,
+        null=True,
+        max_length=6,
+        help_text=_("Promo Kod"),
+    )
+    is_complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name_company
+
+    def kv(self):
+        return self.tm_x_coordination * self.tm_y_coordination
+
+class PromoCode(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='promocode_user')
+    code = models.CharField(max_length=6, unique=True)
+    used = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.code

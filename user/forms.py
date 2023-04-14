@@ -13,6 +13,50 @@ from django.utils.translation import gettext_lazy as _
 # get custom user
 User = get_user_model()
 
+class MyUserLoginForm(AuthenticationForm):
+    error_messages = {
+        # **AuthenticationForm.error_messages,
+        "login_mismatch": _(
+            "The password or email is incorrect. Please make sure you type it correctly."
+        ),
+        **AuthenticationForm.error_messages,
+        # 'is_blocked': _("This account is blocked."),
+    }
+
+    def clean(self):
+        email = self.cleaned_data.get("username")
+        password = self.cleaned_data.get("password")
+
+        if email is not None and password:
+            user = User.objects.filter(email=email).first()
+            if user and not user.is_active:
+                raise forms.ValidationError(
+                    self.error_messages["inactive"],
+                    code="inactive",
+                )
+
+            self.user_cache = authenticate(
+                self.request, email=email, password=password
+            )
+            if self.user_cache is None:
+                raise forms.ValidationError(
+                    self.error_messages["login_mismatch"],
+                    code="login_mismatch",
+                )
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
+
+    def clean_username(self):
+        # print(self.cleaned_data,'clean_username')
+        email = self.cleaned_data.get("username")
+        user = User.objects.filter(email__iexact=email).first()
+        if user:
+            return user.email
+        return email.lower()
+
+
 class BaseRegistrationForm(forms.ModelForm):
 
     error_messages = {
@@ -63,19 +107,21 @@ class BaseRegistrationForm(forms.ModelForm):
         model = User
         fields = (
             "full_name",
+            "father_name",
             "email",
-            # "gov_id",
-            # "user_choices",
-            # "voen_code",
-            # "phone",
-            # "gender",
-            # "social_media",
+            "gov_id",
+            "fin_code",
+            "phone",
+            "home_phone",
+            "address",
+            "profile_picture"
+
         )
         labels = {
             "full_name": "Name, Surname",
             # "voen_code": "Voen code",
-            # "gov_id": "Passport number",
-            # "phone": "Telefon",
+            "gov_id": "Passport number",
+            "phone": "Telefon",
             # "user_choices": "User type",
             "email": "Email",
             # "gender": "Cins",
@@ -169,19 +215,19 @@ class AccountUpdateModelForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            # "profile_picture",
+            "profile_picture",
             "first_name",
             "last_name",
-            # "address",
-            # "phone",
+            "address",
+            "phone",
             # "gender",
             "date_of_birth",
         )
         labels = {
             "first_name": _("Ad"),
             "last_name": _("Soyad"),
-            # "address": _("Ş/V-ki ünvan"),
-            # "phone": _("Telefon"),
+            "address": _("Ş/V-ki ünvan"),
+            "phone": _("Telefon"),
             "date_of_birth": _("Doğum tarixi"),
 
         }

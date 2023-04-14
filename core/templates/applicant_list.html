@@ -1,0 +1,61 @@
+{% extends 'index.html' %} 
+{% load widget_tweaks %}
+
+{% load static %}
+{% block css %} 
+<link rel="stylesheet" href="{% static '/css/ruslan.css'  %}">
+<style>
+    .frame-shadow{
+        box-shadow: 0px 0px 7px 0px #9a9a9a40;
+    }
+</style>
+{% endblock %}
+{% block header %} 
+<!-- <h1>Ana Səhifə</h1> -->
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3" style="background-color: #002F6C;height: 100vh;min-height: 100%; max-height: 100%;">
+            <nav>
+                  <div class="dropdown">
+                    {% if request.user.is_authenticated %}
+                    <h3 style="color:white;text-align: center;">Xoş Gördük,
+                      {{request.user.get_full_name}}</h3><br><hr>
+                    {% else %}
+                    <div class="d-flex justify-content-center align-items-center">
+                      <a href="{% url 'login' %}"><button style="margin-bottom: 15px !important;" class="btnLogin" type="submit"  name='submit' value='sign_in'>&nbsp;&nbsp; Daxil ol&nbsp;&nbsp; </button></a><br><hr>
+                    </div>
+                    {% endif %}
+                    <a href="#" style="text-decoration: none; color: white;">Xidmətlər</a>
+                    <ul class="list d-flex flex-column " style="align-items: flex-start;">
+                      <li><a href="{% url 'home'%}">Azərişıq</a></li>
+                      <br>
+                      {% if request.user.is_authenticated %}
+                      <li><a href="{% url 'applicant_list' %}">Tamamlanmamış Müraciətlər</a></li>
+                      <br>
+                      <li><a href="{% url 'applicant_list_fulled' %}">Göndərilmiş Müraciətlər</a></li>
+                      {% endif %}
+                    </ul>
+                </div>
+              </nav>
+              
+        </div>
+        <div class="col-9 d-flex flex-column">
+          {% if request.user.is_authenticated %}
+          <div style="margin-top: 20px;">
+            <h1 style="text-align: center;">Tamamlanmamış Müraciətlər</h1>
+            <hr>
+        </div>
+          <div class="">
+              <ul>
+                    {% for app in app %}
+                    <a href="{% url 'edit_applicant' app.id %}"><li class=" frame-shadow  rounded d-flex align-items-center  justify-content-center py-2 mt-3 gap-5 ">{{app}}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endblock %}

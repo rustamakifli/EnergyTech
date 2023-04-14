@@ -1,7 +1,10 @@
 asgiref==3.6.0
 Django==4.2
 django-jazzmin==2.6.0
+django-recaptcha==3.0.0
+django-widget-tweaks==1.4.12
 Pillow==9.5.0
 psycopg2-binary==2.9.6
 pyscopg2==66.0.2
+shortuuid==1.0.11
 sqlparse==0.4.3

@@ -1,0 +1,195 @@
+
+{% extends 'index.html' %} 
+{% load widget_tweaks %}
+
+{% load static %}
+{% block header %} 
+<header>
+    <div class="container">
+        <h1>Azərişıq/Müraciət</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+{% endblock %}
+{% block css %}
+<style>
+    .failure{
+        color:red;
+    }
+    .success{
+        color:green;
+    }
+</style>
+{% endblock %}
+{% block content %}
+	<main>
+		<div class="container-fluid">
+			<div class="form-container">
+				
+				<div class="form-body">
+					<form action="" method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-6">
+                            <div class="form-header">
+                                <h2>Vöen Məlumatlar</h2>
+                            </div>
+                            <div class="form-control">
+                                <label for="voen">Vöen</label>
+                                {% render_field form.voen_code class="forms1" %}
+                                <!-- <input type="text" id="voen" class="forms1" name="voen" required> -->
+                            
+                            
+                                <label for="musahibe-adi">Müəsinənin Adı</label>
+                                {% render_field form.name_company class="forms1"  %}
+                            
+                            
+                                <label for="faaliyyet-novu">Fəaliyyət Növü</label>
+                                {% render_field form.voen_activity class="forms1" %}
+                            </div>
+                            <div class="form-header">
+                                <h2>Müraciət Məlumatları</h2>
+                            </div>
+                            <div class="form-control">
+                                <label for="müraciət-no">Müraciət No</label>
+                                {% render_field form.appeal_no class="forms1" %}
+                            
+                                <label for="müraciət-eden">Müraciət Edən</label>
+                                {% render_field form.appealicant class="forms1" %}
+                            
+                                <label for="category">Kategorya</label>
+                                {% render_field form.category class="forms1" %}
+
+                             
+                                <label for="is-mudeti">İşin İcra Müddəti</label>
+                                {% render_field form.appleant_day class="forms1" %}
+
+                            </div>
+                            <div class="form-header">
+                                <h2>Obyekt məlumatları</h2>
+                            </div>
+                            <div class="form-control">
+                                <label for="rayonu">Rayonu:</label>
+                                {% render_field form.region class="forms1" %}
+                            
+                                <label for="reyestr-nomresi">Reyestr nömrəsi:</label>
+                                {% render_field form.reyestr_num class="forms1" %}
+
+                            
+                                <label for="qeydiyyat-nomresi">Qeydiyyat nömrü:</label>
+                                {% render_field form.registr_num class="forms1" %}
+
+                            
+                                <label for="obyekt-unvani">Obyektin ünvanı:</label>
+                                {% render_field form.company_address class="forms1" %}
+
+                            </div>
+                            <div class="form-control">
+                                <h4>Tm nömrəsi</h4>
+                                <ul class="tm-list">
+                                    <li>
+                                        <label for="tm-nomresi">Tm nömrəsi:</label>
+                                        {% render_field form.tm_number class="forms1" %}
+
+                                    </li>
+                                    <li>
+                                        <label for="tm-x-koordinati">Tm x koordinatı:</label>
+                                        {% render_field form.tm_x_coordination class="forms1" %}
+
+                                    </li>
+                                    <li>
+                                        <label for="tm-y-koordinati">Tm y koordinatı:</label>
+                                        {% render_field form.tm_y_coordination class="forms1" %}
+
+                                    </li>
+                                    <li>
+                                        <label for="tm-mesafe">Məsafə:</label>
+                                        {% render_field form.length class="forms1" %}
+
+                                    </li>
+                                    <li>
+                                        <label for="tm-elave">Əlavə:</label>
+                                        {% render_field form.more class="forms1" %}
+
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                            <div class="col-6">
+                                {% include 'user.html' %}
+                                <div class="d-flex">
+                                    <label for="" class="captcha-text">Tamamlanmamış və ya tamamlanmış müraciəti göndərmək üçün robot olmadığınızı təsdiq edin</label>
+                                    {% render_field form.captcha %}
+                                    
+                                </div>
+                                <br>
+                                <div class="d-flex">
+                                    <label for="" class="captcha-text">Əgər varsa Promo Kodu daxil edin</label>
+
+                                    {% render_field form.promo_code class="forms1" id="promo-code" %}
+                                    <br><br>
+                                </div>                               
+                                <p id="promo-code-message"></p>
+
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit">Submit</button>
+                            <!-- <button type="reset">Reset</button> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+	</main>
+{% endblock %}
+{% block script %} 
+
+<script>
+    // promo_code.js
+  
+    // Get the promo code input and message div elements
+    const promoCodeInput = document.getElementById('promo-code');
+    const promoCodeMessage = document.getElementById('promo-code-message');
+  
+    // Add an input event listener to the promo code input
+    promoCodeInput.addEventListener('input', async () => {
+  
+      // Get the promo code from the input field
+      const promoCode = promoCodeInput.value;
+  
+      // Send a POST request to the server with the promo code
+      const response = await fetch('/check-promo-code/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}' // Use Django's CSRF token for security
+        },
+        body: new URLSearchParams({
+          'promo_code': promoCode
+        })
+      });
+  
+      // Parse the response as JSON
+      const responseData = await response.json();
+  
+      // Update the message div with the validation result message
+      promoCodeMessage.textContent = responseData.message;
+      if (responseData.success) {
+      promoCodeMessage.classList.remove('failure');
+      promoCodeMessage.classList.add('success');
+    } else {
+        promoCodeMessage.classList.remove('success');
+        promoCodeMessage.classList.add('failure');
+        }
+    });
+  </script>
+{% endblock %}
