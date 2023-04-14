@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xiw0u1_n&48)qfjf$f29%b5&+qygwdwj76c@=q2&#9g1a7^5y^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if os.environ.get('DEBUG') else True
 
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'user.MyUser'
@@ -130,13 +130,18 @@ LOGIN_REDIRECT_URL = 'home'
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static'
+    ]
+else:
+    STATIC_ROOT =  BASE_DIR / 'static'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-MEDIA_URL = 'media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
